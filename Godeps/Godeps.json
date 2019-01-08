@@ -10,6 +10,10 @@
 			"ImportPath": "github.com/gorilla/mux",
 			"Comment": "v1.6.2-16-g6137e19",
 			"Rev": "6137e193cdcba2725f16de84eaf0db2b769d9668"
+		},
+		{
+			"ImportPath": "goceps/utils",
+			"Rev": "52f8a4d481b3ace6d728704d6320a5658956ce66"
 		}
 	]
 }
