@@ -1,5 +1,7 @@
 package types
 
+import "fmt"
+
 type CNPJ struct {
 	AtividadePrincipal    []*AtividadePrincipal    `json:"atividade_principal"`
 	DataSituacao          string                   `json:"data_situacao"`
@@ -50,4 +52,10 @@ type QSA struct {
 type Billing struct {
 	Free     bool `json:"free"`
 	Database bool `json:"database"`
+}
+
+func (cnpj *CNPJ) MakeURL() string {
+
+	url := fmt.Sprintf("https://www.receitaws.com.br/v1/cnpj/%s", cnpj.CNPJ)
+	return url
 }

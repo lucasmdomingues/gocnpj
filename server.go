@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gocnpj/handlers"
+	"GoCNPJ/handlers"
 	"net/http"
 	"os"
 
@@ -12,7 +12,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8085"
+		port = "8080"
 	}
 
 	r := mux.NewRouter()

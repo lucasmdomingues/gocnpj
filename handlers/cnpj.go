@@ -1,41 +1,56 @@
 package handlers
 
 import (
+	"GoCNPJ/types"
 	"encoding/json"
 	"fmt"
-	"gocnpj/types"
-	"gocnpj/utils"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
-var l utils.Log
-
 func CnpjHandler(w http.ResponseWriter, r *http.Request) {
+
+	log := types.Log{}
 
 	vars := mux.Vars(r)
 
 	cnpj := vars["cnpj"]
-
-	if cnpj == "" || len(cnpj) < 8 {
-		l.Info(w, nil, "CNPJ is required")
+	if cnpj == "" || len(cnpj) < 14 || len(cnpj) > 14 {
+		log.Info(w, nil, "CNPJ inválido.")
 		return
 	}
 
-	route := fmt.Sprintf("https://www.receitaws.com.br/v1/cnpj/%v", cnpj)
-
-	data, err := utils.MakeRequest(w, "GET", route, nil)
-	if err != nil {
-		l.Info(w, nil, err.Error())
+	c := &types.CNPJ{
+		CNPJ: cnpj,
 	}
 
-	var c types.CNPJ
+	route := c.MakeURL()
 
-	err = json.Unmarshal(data, &c)
-	if err != nil {
-		l.Info(w, nil, err.Error())
+	request := &types.Request{
+		ResponseWriter: w,
+		Route:          route,
+		Method:         "GET",
+		Values:         nil,
 	}
 
-	l.Info(w, c, "request success")
+	data, err := request.SendRequest()
+	if err != nil {
+		log.Error(w, err)
+		return
+	}
+
+	err = json.Unmarshal(data, c)
+	if err != nil {
+		log.Error(w, err)
+		return
+	}
+
+	json, err := json.Marshal(c)
+	if err != nil {
+		log.Error(w, err)
+		return
+	}
+
+	fmt.Fprint(w, string(json))
 }
