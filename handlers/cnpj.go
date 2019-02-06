@@ -34,13 +34,13 @@ func CnpjHandler(w http.ResponseWriter, r *http.Request) {
 		Values:         nil,
 	}
 
-	data, err := request.SendRequest()
+	response, err := request.SendRequest()
 	if err != nil {
 		log.Error(w, err)
 		return
 	}
 
-	err = json.Unmarshal(data, c)
+	err = json.Unmarshal(response, c)
 	if err != nil {
 		log.Error(w, err)
 		return
