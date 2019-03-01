@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 type CNPJ struct {
@@ -61,6 +62,10 @@ type Billing struct {
 
 func BuscaCNPJ(cnpj string) (*CNPJ, error) {
 
+	cnpj = strings.Replace(cnpj, ".", "", len(cnpj))
+	cnpj = strings.Replace(cnpj, "/", "", len(cnpj))
+	cnpj = strings.Replace(cnpj, "-", "", len(cnpj))
+
 	url := fmt.Sprintf("https://www.receitaws.com.br/v1/cnpj/%s", cnpj)
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -78,7 +83,7 @@ func BuscaCNPJ(cnpj string) (*CNPJ, error) {
 	}
 
 	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("Error: %s", resp.Status)
+		return nil, fmt.Errorf("Error: %s, Try again.", resp.Status)
 	}
 
 	defer resp.Body.Close()
