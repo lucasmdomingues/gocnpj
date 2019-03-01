@@ -18,7 +18,8 @@ import (
 
 func main() {
 
-	cnpj, err := gocnpj.BuscaCNPJ("123456789123")
+	// Utilize um CNPJ com ou sem os caracteres especiais(Ex: 06813678000170)
+	cnpj, err := gocnpj.BuscaCNPJ("06.813.678/0001-70")
 	if err != nil {
 		log.Fatal(err)
 	}
