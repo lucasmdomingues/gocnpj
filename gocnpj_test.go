@@ -6,7 +6,7 @@ import (
 
 func TestBuscaCNPJ(t *testing.T) {
 
-	_, err := BuscaCNPJ("1111111111")
+	_, err := BuscaCNPJ("06.813.678/0001-70")
 	if err != nil {
 		t.Error()
 	}
