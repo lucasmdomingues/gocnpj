@@ -4,7 +4,7 @@
 go get github.com/lucasmdomingues/gocnpj
 ```
 
-### Como usar
+### Exemplo
 
 ```go
 package main
