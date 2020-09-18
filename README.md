@@ -1,10 +1,10 @@
-### Instalação
+### Installation
 
 ```go
 go get github.com/lucasmdomingues/gocnpj
 ```
 
-### Exemplo
+### Example
 
 ```go
 package main
@@ -17,14 +17,10 @@ import (
 )
 
 func main() {
-
-	// Utilize um CNPJ com ou sem os caracteres especiais(Ex: 06813678000170)
-	cnpj, err := gocnpj.BuscaCNPJ("06.813.678/0001-70")
+	cnpj, err := gocnpj.Search("06.813.678/0001-70")
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println(cnpj)
 }
 ```
 
