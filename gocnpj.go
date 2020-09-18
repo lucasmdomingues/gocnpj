@@ -2,13 +2,14 @@ package gocnpj
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
 )
 
-func BuscaCNPJ(cnpj string) (*CNPJ, error) {
+func Search(cnpj string) (*Company, error) {
 
 	cnpj = strings.Replace(cnpj, ".", "", len(cnpj))
 	cnpj = strings.Replace(cnpj, "/", "", len(cnpj))
@@ -16,22 +17,9 @@ func BuscaCNPJ(cnpj string) (*CNPJ, error) {
 
 	url := fmt.Sprintf("https://www.receitaws.com.br/v1/cnpj/%s", cnpj)
 
-	req, err := http.NewRequest("GET", url, nil)
+	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
-	}
-
-	req.Header.Set("Content-type", "application/json")
-
-	client := &http.Client{}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("Error: %s, Try again.", resp.Status)
 	}
 
 	defer resp.Body.Close()
@@ -40,16 +28,27 @@ func BuscaCNPJ(cnpj string) (*CNPJ, error) {
 		return nil, err
 	}
 
-	var c *CNPJ
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New("Oops, error on search company")
+	}
 
-	err = json.Unmarshal(body, &c)
+	var companyError *CompanyError
+
+	err = json.Unmarshal(body, &companyError)
 	if err != nil {
 		return nil, err
 	}
 
-	if c.Status == "ERROR" {
-		return nil, fmt.Errorf("Error on parse cnpj %s", cnpj)
+	if companyError.Status != "OK" {
+		return nil, fmt.Errorf("Oops, %s", companyError.Message)
 	}
 
-	return c, err
+	var company *Company
+
+	err = json.Unmarshal(body, &company)
+	if err != nil {
+		return nil, err
+	}
+
+	return company, err
 }

@@ -4,10 +4,10 @@ import (
 	"testing"
 )
 
-func TestBuscaCNPJ(t *testing.T) {
-
-	_, err := BuscaCNPJ("06.813.678/0001-70")
+func TestSearch(t *testing.T) {
+	_, err := Search("27865757000102")
 	if err != nil {
-		t.Error()
+		t.Error(err)
+		return
 	}
 }
