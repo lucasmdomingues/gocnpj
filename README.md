@@ -17,7 +17,9 @@ import (
 )
 
 func main() {
-	cnpj, err := gocnpj.Search("06.813.678/0001-70")
+	service := gocnpj.NewService()
+
+	company, err := service.Search("06.813.678/0001-70")
 	if err != nil {
 		log.Fatal(err)
 	}

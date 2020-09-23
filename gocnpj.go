@@ -9,8 +9,17 @@ import (
 	"strings"
 )
 
-func Search(cnpj string) (*Company, error) {
+type service struct{}
 
+type Service interface {
+	Search(cnpj string) (*Company, error)
+}
+
+func NewService() Service {
+	return new(service)
+}
+
+func (s *service) Search(cnpj string) (*Company, error) {
 	cnpj = strings.Replace(cnpj, ".", "", len(cnpj))
 	cnpj = strings.Replace(cnpj, "/", "", len(cnpj))
 	cnpj = strings.Replace(cnpj, "-", "", len(cnpj))
