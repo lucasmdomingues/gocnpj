@@ -7,8 +7,8 @@ go get github.com/lucasmdomingues/gocnpj
 ### ReceitaWS
 https://www.receitaws.com.br/
 
-### Content
+## Content
 
-## Company
+### Company
 
 * Search by CNPJ
